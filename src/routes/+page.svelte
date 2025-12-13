@@ -22,6 +22,22 @@
     'Cloud': 'glass-sky'
   };
 
+  // Icon mapping
+  const skillIcons: Record<string, string> = {
+    'SvelteKit': 'devicon-svelte-plain',
+    'React': 'devicon-react-original',
+    'Tailwind CSS': 'devicon-tailwindcss-original',
+    'TypeScript': 'devicon-typescript-plain',
+    'Node.js': 'devicon-nodejs-plain',
+    'PostgreSQL': 'devicon-postgresql-plain',
+    'Docker': 'devicon-docker-plain',
+    'AWS': 'devicon-amazonwebservices-plain-wordmark',
+    'Python': 'devicon-python-plain',
+    'FastAPI': 'devicon-fastapi-plain',
+    'Blockchain': 'devicon-polygon-plain',
+    'Web3': 'devicon-web3-plain'
+  };
+
   function observeSections() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -172,26 +188,29 @@
   </div>
 </section>
 
-<!-- Skills Section (Redesigned with Color) -->
+<!-- Skills Section with Icons (Redesigned) -->
 <section id="skills" class="py-32 relative">
-   <div class="absolute bottom-[20%] right-[-10%] w-[40%] h-[40%] bg-emerald-900/10 blur-[100px] rounded-full pointer-events-none"></div>
+   <div class="absolute bottom-[20%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 blur-[150px] rounded-full pointer-events-none"></div>
 
   <div class="max-w-6xl mx-auto px-6">
     <p class="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-16 text-center flex items-center justify-center gap-2">
       <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span> 04 — Stack
     </p>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {#each Object.entries(skillsByCategory) as [category, skills]}
-        <div class="{categoryThemes[category] || 'glass'} p-8 rounded-2xl">
-          <h3 class="text-sm font-medium uppercase tracking-wider text-white/50 mb-6 border-b border-white/5 pb-2 flex justify-between items-center group-hover:text-white transition-colors">
+        <div class="{categoryThemes[category] || 'glass'} p-6 rounded-2xl border border-white/5 hover:border-white/10 transition-colors duration-500 group/card cursor-default">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-white/40 mb-6 flex justify-between items-center group-hover/card:text-white/60 transition-colors">
             {category}
           </h3>
-          <div class="flex flex-wrap gap-2.5">
+          <div class="flex flex-col gap-3">
             {#each skills as skill}
-              <span class="px-3 py-1.5 rounded-md bg-white/5 border border-white/5 text-sm font-light text-zinc-300 hover:text-white hover:bg-white/10 hover:border-white/20 transition-all cursor-default flex items-center gap-2 shadow-sm">
-                 {skill.name}
-              </span>
+              <div class="group flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 border border-transparent hover:border-white/10 hover-lift">
+                <div class="w-10 h-10 flex items-center justify-center bg-black/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                   <i class="{skillIcons[skill.name] || 'devicon-devicon-plain'} text-2xl text-zinc-500 group-hover:text-white transition-colors duration-300 grayscale group-hover:grayscale-0"></i>
+                </div>
+                <span class="text-sm font-medium text-zinc-400 group-hover:text-white transition-colors">{skill.name}</span>
+              </div>
             {/each}
           </div>
         </div>
