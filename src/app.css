@@ -2,3 +2,52 @@
 @import 'tw-animate-css';
 @import './utils.css';
 @import './fonts.css';
+
+:root {
+  /* Elegant Dark Theme Palette */
+  --bg-primary: #050505; /* Deep Matte Black */
+  --bg-secondary: #0a0a0a; /* Slightly lighter black */
+  --bg-glass: rgba(10, 10, 10, 0.6); /* More transparent, sophisticated */
+  
+  --text-main: #f5f5f7; /* Off-white for less eye strain */
+  --text-muted: #888888; /* Elegant grey */
+  
+  /* Refined Accents - Subtler, more premium */
+  --accent-primary: #d4d4d8; /* Light grey/silver for primary actions */
+  --accent-glow: rgba(255, 255, 255, 0.1);
+  --accent-gradient-start: #2e1065; /* Deep Violet */
+  --accent-gradient-end: #0ea5e9; /* Sky Blue */
+  
+  --font-body: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  min-height: 100vh;
+  selection-background-color: white;
+  selection-color: black;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.02em; /* Tighter, more modern tracking */
+}
+
+/* Smooth Scrolling & Scrollbar */
+html {
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
