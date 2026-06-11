@@ -1,53 +1,70 @@
 @import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
 @import 'tw-animate-css';
 @import './utils.css';
-@import './fonts.css';
 
 :root {
-  /* Elegant Dark Theme Palette */
-  --bg-primary: #050505; /* Deep Matte Black */
-  --bg-secondary: #0a0a0a; /* Slightly lighter black */
-  --bg-glass: rgba(10, 10, 10, 0.6); /* More transparent, sophisticated */
-  
-  --text-main: #f5f5f7; /* Off-white for less eye strain */
-  --text-muted: #888888; /* Elegant grey */
-  
-  /* Refined Accents - Subtler, more premium */
-  --accent-primary: #d4d4d8; /* Light grey/silver for primary actions */
-  --accent-glow: rgba(255, 255, 255, 0.1);
-  --accent-gradient-start: #2e1065; /* Deep Violet */
-  --accent-gradient-end: #0ea5e9; /* Sky Blue */
-  
-  --font-body: 'Poppins', sans-serif;
+	/* Editorial dark — warm ink, hairlines, one acid accent */
+	--bg: #0c0c0b;
+	--bg-raised: #111110;
+	--line: rgba(235, 230, 218, 0.1);
+	--line-strong: rgba(235, 230, 218, 0.22);
+
+	--text: #ece9e2;
+	--text-dim: #9b968a;
+	--text-faint: #5c584f;
+
+	--accent: #cdf563;
+	--accent-ink: #161806;
+
+	--font-display: 'Space Grotesk', 'Poppins', sans-serif;
+	--font-serif: 'Instrument Serif', Georgia, serif;
+	--font-mono: 'Space Mono', ui-monospace, 'SF Mono', monospace;
+}
+
+html {
+	scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-main);
-  font-family: var(--font-body);
-  overflow-x: hidden;
-  min-height: 100vh;
-  selection-background-color: white;
-  selection-color: black;
-  -webkit-font-smoothing: antialiased;
-  letter-spacing: -0.02em; /* Tighter, more modern tracking */
+	background-color: var(--bg);
+	color: var(--text);
+	font-family: var(--font-display);
+	overflow-x: hidden;
+	min-height: 100vh;
+	-webkit-font-smoothing: antialiased;
+	letter-spacing: -0.01em;
 }
 
-/* Smooth Scrolling & Scrollbar */
-html {
-  scroll-behavior: smooth;
+::selection {
+	background-color: var(--accent);
+	color: var(--accent-ink);
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+	width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+	background: var(--bg);
 }
 ::-webkit-scrollbar-thumb {
-  background: #333;
-  border-radius: 3px;
+	background: #2c2b28;
+	border-radius: 0;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+	background: #44423d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }

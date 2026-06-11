@@ -1,74 +1,144 @@
 @layer utilities {
-  .glass {
-    @apply backdrop-blur-xl bg-white/5 border border-white/5;
-  }
-  
-  .glass-card {
-    @apply backdrop-blur-lg bg-white/[0.02] border border-white/[0.05] transition-all duration-500 ease-out;
-  }
+	.font-display {
+		font-family: var(--font-display);
+	}
+	.font-serif-display {
+		font-family: var(--font-serif);
+	}
+	.font-mono-ui {
+		font-family: var(--font-mono);
+		letter-spacing: 0.02em;
+	}
 
-  /* Colored Glass Variants */
-  .glass-indigo {
-    @apply backdrop-blur-lg bg-indigo-500/[0.03] border border-indigo-500/10 hover:bg-indigo-500/[0.08] hover:border-indigo-500/20 transition-all duration-500;
-  }
-  
-  .glass-violet {
-     @apply backdrop-blur-lg bg-violet-500/[0.03] border border-violet-500/10 hover:bg-violet-500/[0.08] hover:border-violet-500/20 transition-all duration-500;
-  }
-  
-  .glass-sky {
-     @apply backdrop-blur-lg bg-sky-500/[0.03] border border-sky-500/10 hover:bg-sky-500/[0.08] hover:border-sky-500/20 transition-all duration-500;
-  }
-  
-  .glass-emerald {
-      @apply backdrop-blur-lg bg-emerald-500/[0.03] border border-emerald-500/10 hover:bg-emerald-500/[0.08] hover:border-emerald-500/20 transition-all duration-500;
-  }
+	/* Hairline borders used across the whole layout */
+	.hairline {
+		border-color: var(--line);
+	}
 
-  /* Subtler text effects */
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-white via-zinc-400 to-zinc-600;
-  }
-  
-  .text-gradient-color {
-     @apply bg-clip-text text-transparent bg-gradient-to-br from-indigo-300 via-sky-300 to-emerald-300;
-  }
-  
-  .text-gradient-violet {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-300 to-indigo-300;
-  }
-  .text-gradient-sky {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-sky-300 to-cyan-300;
-  }
-  .text-gradient-emerald {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 to-teal-300;
-  }
+	/* Mono section label, e.g. "01 / ABOUT" */
+	.section-label {
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.25em;
+		text-transform: uppercase;
+		color: var(--text-faint);
+	}
 
-  /* Minimalist hover effects */
-  .hover-lift {
-    @apply transition-transform duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] hover:-translate-y-2;
-  }
-  
-  .subtle-glow {
-    box-shadow: 0 0 40px -10px rgba(255,255,255,0.05);
-  }
+	/* Animated underline link */
+	.link-line {
+		position: relative;
+		display: inline-block;
+	}
+	.link-line::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		bottom: -2px;
+		height: 1px;
+		width: 100%;
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: right;
+		transition: transform 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+	}
+	.link-line:hover::after {
+		transform: scaleX(1);
+		transform-origin: left;
+	}
+
+	/* Hollow display type for oversized ghost numerals */
+	.text-outline {
+		color: transparent;
+		-webkit-text-stroke: 1px var(--line-strong);
+	}
+
+	/* Film-grain texture laid over the whole site */
+	.noise-overlay {
+		background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+		background-size: 256px 256px;
+	}
+
+	/* Faint blueprint grid backdrop */
+	.blueprint-grid {
+		background-image:
+			linear-gradient(var(--line) 1px, transparent 1px),
+			linear-gradient(90deg, var(--line) 1px, transparent 1px);
+		background-size: 80px 80px;
+		mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 75%);
+	}
 }
 
-/* Elegant, slow animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Scroll reveal — elements start hidden, .is-visible plays them in */
+.reveal {
+	opacity: 0;
+	transform: translateY(28px);
+	transition:
+		opacity 0.9s cubic-bezier(0.2, 0.65, 0.3, 1),
+		transform 0.9s cubic-bezier(0.2, 0.65, 0.3, 1);
+	transition-delay: var(--reveal-delay, 0s);
+}
+.reveal.is-visible {
+	opacity: 1;
+	transform: translateY(0);
 }
 
-.animate-fade-in {
-  animation: fadeIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+/* Page transition — plays on every client-side navigation */
+@keyframes page-enter {
+	from {
+		opacity: 0;
+		transform: translateY(16px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+.page-enter {
+	animation: page-enter 0.6s cubic-bezier(0.2, 0.65, 0.3, 1) both;
 }
 
-@keyframes float-slow {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  50% { transform: translate(10px, -20px) rotate(2deg); }
-  100% { transform: translate(0, 0) rotate(0deg); }
+/* Hero entrance */
+@keyframes rise-in {
+	from {
+		opacity: 0;
+		transform: translateY(36px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+.animate-rise {
+	opacity: 0;
+	animation: rise-in 1s cubic-bezier(0.2, 0.65, 0.3, 1) forwards;
 }
 
-.animate-float-slow {
-  animation: float-slow 15s ease-in-out infinite;
+/* Availability pulse dot */
+@keyframes pulse-dot {
+	0%,
+	100% {
+		box-shadow: 0 0 0 0 rgba(205, 245, 99, 0.45);
+	}
+	50% {
+		box-shadow: 0 0 0 6px rgba(205, 245, 99, 0);
+	}
+}
+.pulse-dot {
+	animation: pulse-dot 2.4s ease-in-out infinite;
+}
+
+/* Marquee strip */
+@keyframes marquee {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-50%);
+	}
+}
+.animate-marquee {
+	animation: marquee 30s linear infinite;
+}
+.marquee-mask {
+	mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
 }

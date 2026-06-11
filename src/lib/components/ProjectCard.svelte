@@ -1,57 +1,57 @@
 <script lang="ts">
-  let { project } = $props();
+	import type { Project } from '$lib/data';
+
+	let { project, index }: { project: Project; index: number } = $props();
+
+	const indexLabel = $derived(String(index + 1).padStart(2, '0'));
 </script>
 
-<a href={project.link} target="_blank" rel="noopener noreferrer" class="group block h-full">
-  <article class="glass-card rounded-2xl overflow-hidden h-full flex flex-col hover:border-violet-500/30 hover:shadow-[0_0_30px_-10px_rgba(139,92,246,0.15)]">
-    <!-- Image -->
-    <div class="relative aspect-video overflow-hidden bg-zinc-900">
-      <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500 z-10"></div>
-      <img 
-        src={project.image} 
-        alt={project.title} 
-        class="w-full h-full object-cover transform transition-transform duration-700 ease-out group-hover:scale-105 opacity-90 group-hover:opacity-100"
-      />
-    </div>
-    
-    <!-- Content -->
-    <div class="p-8 flex flex-col flex-grow relative">
-      <!-- Subtle accent line -->
-      <div class="absolute top-0 left-8 right-8 h-[1px] bg-gradient-to-r from-transparent via-violet-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<!-- eslint-disable svelte/no-navigation-without-resolve -->
+<a
+	href={project.link}
+	target="_blank"
+	rel="noopener noreferrer"
+	class="group block border-t border-(--line) py-10 transition-colors duration-500 last:border-b hover:bg-(--bg-raised) md:py-14"
+>
+	<article class="grid grid-cols-12 items-start gap-6 md:gap-10">
+		<div
+			class="font-mono-ui col-span-12 flex items-center gap-4 text-xs text-(--text-faint) md:col-span-1 md:block"
+		>
+			<span class="transition-colors duration-300 group-hover:text-(--accent)">{indexLabel}</span>
+			<span class="md:mt-2 md:block">{project.year}</span>
+		</div>
 
-      <div class="flex justify-between items-start mb-4">
-        <h3 class="text-2xl font-medium text-white group-hover:text-violet-300 transition-colors">
-          {project.title}
-        </h3>
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          width="20" 
-          height="20" 
-          viewBox="0 0 24 24" 
-          fill="none" 
-          stroke="currentColor" 
-          stroke-width="1.5" 
-          stroke-linecap="round" 
-          stroke-linejoin="round"
-          class="text-zinc-500 group-hover:text-violet-300 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all"
-        >
-          <line x1="7" y1="17" x2="17" y2="7"></line>
-          <polyline points="7 7 17 7 17 17"></polyline>
-        </svg>
-      </div>
-      
-      <p class="text-[var(--text-muted)] leading-relaxed text-sm mb-8 flex-grow">
-        {project.description}
-      </p>
-      
-      <!-- Minimal tags with color on hover -->
-      <div class="flex flex-wrap gap-2 mt-auto pt-4 border-t border-white/5 group-hover:border-violet-500/10 transition-colors">
-        {#each project.tags as tag}
-          <span class="text-xs font-mono text-zinc-500 uppercase tracking-wider group-hover:text-violet-400 transition-colors">
-            {tag}
-          </span>
-        {/each}
-      </div>
-    </div>
-  </article>
+		<div class="col-span-12 md:col-span-6">
+			<h3
+				class="mb-4 text-3xl font-medium tracking-tight text-(--text) transition-transform duration-500 group-hover:translate-x-2 md:text-5xl"
+			>
+				{project.title}
+				<span
+					class="inline-block text-(--text-faint) transition-all duration-500 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-(--accent)"
+					aria-hidden="true">↗</span
+				>
+			</h3>
+			<p class="mb-6 max-w-xl leading-relaxed font-light text-(--text-dim)">
+				{project.description}
+			</p>
+			<div class="flex flex-wrap gap-2">
+				{#each project.tags as tag (tag)}
+					<span
+						class="font-mono-ui border border-(--line) px-3 py-1 text-[0.65rem] tracking-widest text-(--text-faint) uppercase transition-colors duration-300 group-hover:border-(--line-strong) group-hover:text-(--text-dim)"
+					>
+						{tag}
+					</span>
+				{/each}
+			</div>
+		</div>
+
+		<div class="col-span-12 overflow-hidden md:col-span-5">
+			<img
+				src={project.image}
+				alt={project.title}
+				loading="lazy"
+				class="aspect-3/2 w-full object-cover opacity-70 grayscale transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:opacity-100 group-hover:grayscale-0"
+			/>
+		</div>
+	</article>
 </a>

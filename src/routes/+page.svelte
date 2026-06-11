@@ -1,237 +1,127 @@
 <script lang="ts">
-  import { data } from '$lib/data';
-  import ProjectCard from '$lib/components/ProjectCard.svelte';
-  import { onMount } from 'svelte';
+	import { resolve } from '$app/paths';
+	import { data } from '$lib/data';
+	// import ContactCta from '$lib/components/ContactCta.svelte';
+	// import HeroScene from '$lib/components/HeroScene.svelte';
+	// import { reveal } from '$lib/actions/reveal';
 
-  let visibleSections = $state(new Set());
-
-  // Group skills by category for better display
-  const skillsByCategory = data.skills.reduce((acc, skill) => {
-    if (!acc[skill.category]) acc[skill.category] = [];
-    acc[skill.category].push(skill);
-    return acc;
-  }, {});
-
-  // Map categories to color themes
-  const categoryThemes = {
-    'Frontend': 'glass-indigo',
-    'Backend': 'glass-violet',
-    'Database': 'glass-emerald',
-    'DevOps': 'glass-sky',
-    'Language': 'glass-indigo',
-    'Cloud': 'glass-sky'
-  };
-
-  // Icon mapping
-  const skillIcons: Record<string, string> = {
-    'SvelteKit': 'devicon-svelte-plain',
-    'React': 'devicon-react-original',
-    'Tailwind CSS': 'devicon-tailwindcss-original',
-    'TypeScript': 'devicon-typescript-plain',
-    'Node.js': 'devicon-nodejs-plain',
-    'PostgreSQL': 'devicon-postgresql-plain',
-    'Docker': 'devicon-docker-plain',
-    'AWS': 'devicon-amazonwebservices-plain-wordmark',
-    'Python': 'devicon-python-plain',
-    'FastAPI': 'devicon-fastapi-plain',
-    'Blockchain': 'devicon-polygon-plain',
-    'Web3': 'devicon-web3-plain'
-  };
-
-  function observeSections() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          visibleSections.add(entry.target.id);
-          visibleSections = new Set(visibleSections);
-        }
-      });
-    }, { threshold: 0.1 });
-
-    document.querySelectorAll('section').forEach(section => {
-      observer.observe(section);
-    });
-  }
-
-  onMount(() => {
-    observeSections();
-  });
+	// const marqueeItems = [
+	// 	'Full Stack Development',
+	// 	'System Architecture',
+	// 	'UI Engineering',
+	// 	'Performance Tuning',
+	// 	'API Design',
+	// 	'Cloud Infrastructure'
+	// ];
 </script>
 
-<!-- Hero Section -->
-<section id="home" class="min-h-screen flex items-center justify-center relative pt-16 overflow-hidden">
-  <!-- Interactive background aura -->
-  <div class="absolute inset-0 pointer-events-none">
-     <div class="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(79,70,229,0.2)_0%,transparent_70%)] blur-[80px] animate-pulse-glow"></div>
-     <div class="absolute bottom-[-10%] left-[-20%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(14,165,233,0.15)_0%,transparent_70%)] blur-[80px]" style="animation-delay: 2s"></div>
-  </div>
+<svelte:head>
+	<title>{data.profile.name} — {data.profile.role}</title>
+</svelte:head>
 
-  <div class="max-w-4xl mx-auto px-6 text-center z-10">
-    <span class="inline-block mb-8 text-sm font-medium tracking-[0.3em] uppercase text-indigo-400 opacity-90 animate-fade-in" style="animation-delay: 0.2s">
-      Design Engineer
-    </span>
-    
-    <h1 class="text-6xl md:text-8xl font-medium tracking-tight mb-8 leading-[1.1] animate-fade-in" style="animation-delay: 0.4s">
-      Creating <span class="text-zinc-600 font-serif italic">digital</span> experiences that feel <span class="text-gradient-color drop-shadow-lg font-semibold">alive</span>.
-    </h1>
-    
-    <p class="text-xl md:text-2xl text-[var(--text-muted)] font-light max-w-2xl mx-auto mb-12 animate-fade-in" style="animation-delay: 0.6s">
-      Hi, I'm {data.profile.name}. I craft polished software with a focus on user experience and architectural elegance.
-    </p>
+<!-- ======================== HERO ======================== -->
+<section class="relative flex min-h-screen flex-col justify-center overflow-hidden">
+	<div class="relative mx-auto w-full max-w-7xl px-6 pb-12 md:px-10">
 
-    <div class="flex flex-col md:flex-row justify-center gap-6 animate-fade-in" style="animation-delay: 0.8s">
-       <a href="#projects" class="text-white border-b border-indigo-400/50 pb-1 hover:text-indigo-300 hover:border-indigo-300 transition-all duration-300">View Selected Works</a>
-       <span class="hidden md:inline text-zinc-700">/</span>
-       <a href="#about" class="text-[var(--text-muted)] hover:text-white transition-colors">Read About Me</a>
-    </div>
-  </div>
+		<h1
+			class="mb-12 text-[13vw] leading-[0.95] font-medium tracking-tighter text-(--text) md:text-[7.5rem] lg:text-[9rem]"
+		>
+			<span class="animate-rise block" style="animation-delay: 0.25s">Adhil</span>
+			<span class="animate-rise block md:pl-[0.8em]" style="animation-delay: 0.4s">
+				Rumais<span class="text-(--accent)">.</span>
+			</span>
+		</h1>
+				<div
+			class="font-mono-ui animate-rise mb-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs tracking-widest text-(--text-dim) uppercase"
+			style="animation-delay: 0.1s"
+		>
+			<span class="flex items-center gap-2">
+				{data.profile.role}
+			</span>
+			<span class="text-(--text-faint)">{data.profile.location}</span>
+		</div>
+
+		<div
+			class="animate-rise flex flex-col gap-10 border-t border-(--line) pt-8 md:flex-row md:items-end md:justify-between"
+			style="animation-delay: 0.6s"
+		>
+			<p class="max-w-xl text-xl leading-relaxed font-light text-(--text-dim) md:text-2xl">
+				Full-stack engineer in Kerala. I take products from first schema to final pixel — and I
+				sweat the <span class="font-serif-display text-(--text) italic">details</span> most people never
+				notice.
+			</p>
+
+			<div class="flex items-center gap-8">
+				<a
+					href={resolve('/projects')}
+					class="link-line font-mono-ui text-xs tracking-widest text-(--text) uppercase"
+				>
+					See projects →
+				</a>
+				<a
+					href={resolve('/work')}
+					class="link-line font-mono-ui text-xs tracking-widest text-(--text-dim) uppercase"
+				>
+					Where I've worked
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Marquee strip -->
+	<!-- <div
+		class="marquee-mask animate-rise overflow-hidden border-t border-(--line) py-5"
+		style="animation-delay: 0.8s"
+	>
+		<div class="animate-marquee flex w-max gap-12 whitespace-nowrap">
+			{#each [0, 1] as half (half)}
+				<div
+					class="font-mono-ui flex gap-12 text-xs tracking-[0.3em] text-(--text-faint) uppercase"
+					aria-hidden={half === 1}
+				>
+					{#each marqueeItems as item (item)}
+						<span>{item}</span>
+						<span class="text-(--accent)">✦</span>
+					{/each}
+				</div>
+			{/each}
+		</div>
+	</div> -->
 </section>
 
-<!-- About Section -->
-<section id="about" class="py-32 relative">
-  <div class="max-w-5xl mx-auto px-6">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
-       <div class="sticky top-32">
-          <p class="text-xs font-bold tracking-widest uppercase text-indigo-400 mb-8 flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></span> 01 — About
-          </p>
-          <h2 class="text-4xl md:text-5xl font-medium mb-8 leading-tight">
-            Bridging the gap between <br />
-            <span class="text-gradient-violet font-semibold">design & engineering.</span>
-          </h2>
-          
-          <div class="relative w-24 h-24 mb-8">
-             <div class="absolute inset-0 bg-indigo-500 blur-2xl opacity-30 rounded-full animate-pulse-glow"></div>
-             <img src={data.profile.avatar} alt="Portrait" class="relative w-full h-full rounded-full grayscale hover:grayscale-0 transition-all duration-700 opacity-90 border border-indigo-500/20" />
-          </div>
-       </div>
-       
-       <div class="space-y-8 text-lg font-light text-[var(--text-muted)] leading-relaxed">
-         <p>{data.profile.bio}</p>
-         
-         <p>
-           I believe that the best products are built at the intersection of strong technical foundations and intuitive design. My approach is minimalist yet functional, ensuring every pixel serves a purpose.
-         </p>
-         
-         <div class="pt-8 border-t border-indigo-500/10">
-            <h3 class="text-indigo-200 text-sm font-medium mb-4 uppercase tracking-wider">Expertise</h3>
-            <ul class="grid grid-cols-2 gap-y-2 text-sm text-zinc-400">
-               <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-indigo-500 rounded-full"></span> Full Stack Development</li>
-               <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-violet-500 rounded-full"></span> UI/UX Design</li>
-               <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-sky-500 rounded-full"></span> System Architecture</li>
-               <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> Performance Tuning</li>
-            </ul>
-         </div>
-       </div>
-    </div>
-  </div>
-</section>
+<!-- ======================== ABOUT TEASER ======================== -->
+<!-- <section class="border-t border-(--line)">
+	<div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-36">
+		<div class="grid grid-cols-12 gap-y-12 md:gap-x-10">
+			<div class="col-span-12 md:col-span-4">
+				<p class="section-label" use:reveal>About</p>
+			</div>
 
-<!-- Experience Section -->
-<section id="experience" class="py-32 relative overflow-hidden">
-  <!-- Subtle background glow -->
-  <div class="absolute top-[20%] left-[-10%] w-[40%] h-[40%] bg-violet-900/10 blur-[120px] rounded-full pointer-events-none"></div>
+			<div class="col-span-12 md:col-span-8">
+				<h2 class="mb-10 text-3xl leading-snug font-medium tracking-tight md:text-5xl" use:reveal>
+					An engineer who thinks like a
+					<span class="font-serif-display text-(--accent) italic">designer</span>, and a builder who
+					thinks like an <span class="font-serif-display text-(--accent) italic">owner</span>.
+				</h2>
 
-  <div class="max-w-4xl mx-auto px-6">
-    <p class="text-xs font-bold tracking-widest uppercase text-violet-400 mb-12 flex items-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_10px_rgba(139,92,246,0.5)]"></span> 02 — Experience
-    </p>
-    
-    <div class="space-y-12 border-l border-violet-500/10 pl-8 md:pl-12 relative">
-      {#each data.experience as job}
-        <div class="relative group">
-           <!-- Timeline dot -->
-           <span class="absolute -left-[45px] md:-left-[61px] top-2 w-3 h-3 rounded-full border border-violet-500/30 bg-[var(--bg-primary)] group-hover:border-violet-400 group-hover:bg-violet-400 group-hover:shadow-[0_0_10px_rgba(139,92,246,0.8)] transition-all duration-300"></span>
-           
-           <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-             <h3 class="text-2xl font-medium text-white group-hover:text-violet-300 transition-colors">{job.role}</h3>
-             <span class="text-sm font-mono text-zinc-500 group-hover:text-violet-400/70 transition-colors">{job.period}</span>
-           </div>
-           
-           <div class="text-lg text-violet-400/90 mb-4 font-light">{job.company}</div>
-           
-           <p class="text-[var(--text-muted)] leading-relaxed max-w-2xl group-hover:text-zinc-300 transition-colors">
-             {job.description}
-           </p>
-        </div>
-      {/each}
-    </div>
-  </div>
-</section>
+				<p
+					class="mb-10 max-w-2xl text-lg leading-relaxed font-light text-(--text-dim)"
+					use:reveal={{ delay: 100 }}
+				>
+					{data.profile.bio}
+				</p>
 
-<!-- Projects Section -->
-<section id="projects" class="py-32 relative">
-  <div class="absolute inset-0 bg-gradient-to-b from-transparent via-sky-900/5 to-transparent pointer-events-none"></div>
-  
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="flex justify-between items-end mb-20">
-      <div>
-         <p class="text-xs font-bold tracking-widest uppercase text-sky-400 mb-4 flex items-center gap-2">
-           <span class="w-2 h-2 rounded-full bg-sky-500 shadow-[0_0_10px_rgba(14,165,233,0.5)]"></span> 03 — Works
-         </p>
-         <h2 class="text-4xl md:text-5xl font-medium">
-           Selected <span class="text-gradient-sky font-semibold">Projects</span>
-         </h2>
-      </div>
-      <a href="https://github.com/adhil523" target="_blank" class="hidden md:block text-sm text-[var(--text-muted)] hover:text-sky-300 transition-colors group">
-        github.com/adhil523 <span class="group-hover:translate-x-1 inline-block transition-transform">→</span>
-      </a>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
-      {#each data.projects as project}
-         <div class="h-96">
-            <ProjectCard {project} />
-         </div>
-      {/each}
-    </div>
-  </div>
-</section>
+				<div use:reveal={{ delay: 200 }}>
+					<a
+						href={resolve('/about')}
+						class="link-line font-mono-ui text-xs tracking-widest text-(--text) uppercase"
+					>
+						More about me →
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</section> -->
 
-<!-- Skills Section with Icons (Redesigned) -->
-<section id="skills" class="py-32 relative">
-   <div class="absolute bottom-[20%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/10 blur-[150px] rounded-full pointer-events-none"></div>
-
-  <div class="max-w-6xl mx-auto px-6">
-    <p class="text-xs font-bold tracking-widest uppercase text-emerald-400 mb-16 text-center flex items-center justify-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)]"></span> 04 — Stack
-    </p>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {#each Object.entries(skillsByCategory) as [category, skills]}
-        <div class="{categoryThemes[category] || 'glass'} p-6 rounded-2xl border border-white/5 hover:border-white/10 transition-colors duration-500 group/card cursor-default">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-white/40 mb-6 flex justify-between items-center group-hover/card:text-white/60 transition-colors">
-            {category}
-          </h3>
-          <div class="flex flex-col gap-3">
-            {#each skills as skill}
-              <div class="group flex items-center gap-4 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-all duration-300 border border-transparent hover:border-white/10 hover-lift">
-                <div class="w-10 h-10 flex items-center justify-center bg-black/20 rounded-lg group-hover:scale-110 transition-transform duration-300">
-                   <i class="{skillIcons[skill.name] || 'devicon-devicon-plain'} text-2xl text-zinc-500 group-hover:text-white transition-colors duration-300 grayscale group-hover:grayscale-0"></i>
-                </div>
-                <span class="text-sm font-medium text-zinc-400 group-hover:text-white transition-colors">{skill.name}</span>
-              </div>
-            {/each}
-          </div>
-        </div>
-      {/each}
-    </div>
-  </div>
-</section>
-
-<!-- Contact Section -->
-<section id="contact" class="py-40 text-center relative overflow-hidden">
-  <div class="absolute inset-0 bg-gradient-to-t from-indigo-900/20 to-transparent pointer-events-none"></div>
-  
-  <div class="max-w-4xl mx-auto px-6 relative z-10">
-    <p class="text-xs font-bold tracking-widest uppercase text-indigo-400 mb-8">05 — Contact</p>
-    <h2 class="text-5xl md:text-7xl font-medium mb-12 tracking-tight hover:italic transition-all duration-300 text-gradient-color p-4">Let's build together.</h2>
-    
-    <a 
-      href="mailto:{data.profile.email}" 
-      class="inline-block border border-indigo-500/30 px-12 py-5 rounded-full text-lg hover:bg-indigo-500 hover:text-white hover:border-transparent hover:shadow-[0_0_30px_rgba(99,102,241,0.4)] transition-all duration-500"
-    >
-      {data.profile.email}
-    </a>
-  </div>
-</section>
+<!-- <ContactCta /> -->

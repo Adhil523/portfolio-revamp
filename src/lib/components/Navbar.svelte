@@ -1,62 +1,142 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  
-  let isScrolled = $state(false);
+	import { resolve } from '$app/paths';
+	import { page } from '$app/state';
+	import { onMount } from 'svelte';
+	import { data } from '$lib/data';
 
-  function handleScroll() {
-    isScrolled = window.scrollY > 20;
-  }
-  
-  onMount(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  });
-  
-  const links = [
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Contact', href: '#contact' }
-  ];
+	let isScrolled = $state(false);
+	let isHidden = $state(false);
+	let isMobileMenuOpen = $state(false);
+
+	let lastScrollY = 0;
+
+	function handleScroll() {
+		const y = window.scrollY;
+		isScrolled = y > 20;
+		// Hide when scrolling down past the top strip, reveal on any upward scroll.
+		if (y > lastScrollY && y > 120) {
+			isHidden = true;
+		} else if (y < lastScrollY) {
+			isHidden = false;
+		}
+		lastScrollY = y;
+	}
+
+	onMount(() => {
+		lastScrollY = window.scrollY;
+		window.addEventListener('scroll', handleScroll, { passive: true });
+		const handleResize = () => {
+			if (window.innerWidth >= 768) isMobileMenuOpen = false;
+		};
+		window.addEventListener('resize', handleResize);
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('resize', handleResize);
+		};
+	});
+
+	const links = [
+		{ index: '01', name: 'Work', href: resolve('/work') },
+		{ index: '02', name: 'Projects', href: resolve('/projects') },
+		{ index: '03', name: 'About', href: resolve('/about') },
+		{ index: '04', name: 'Contact', href: resolve('/contact') }
+	];
+
+	const isActive = (href: string) => page.url.pathname === href;
 </script>
 
-<nav 
-  class="fixed top-6 left-1/2 -translate-x-1/2 z-50 transition-all duration-500 w-[95%] max-w-5xl rounded-full"
-  class:glass={isScrolled}
-  class:bg-transparent={!isScrolled}
-  class:py-3={isScrolled}
-  class:py-6={!isScrolled}
+<!-- eslint-disable svelte/no-navigation-without-resolve -- all hrefs are resolve()-built or mailto -->
+<header
+	class="fixed top-0 left-0 z-50 w-full border-b transition-all duration-500 {isScrolled ||
+	isMobileMenuOpen
+		? 'border-(--line) bg-[rgba(12,12,11,0.85)] backdrop-blur-md'
+		: 'border-transparent bg-transparent'} {isHidden && !isMobileMenuOpen
+		? '-translate-y-full'
+		: 'translate-y-0'}"
 >
-  <div class="px-6 md:px-8 flex items-center justify-between">
-    <a href="/" class="text-xl font-medium tracking-tight group">
-      <span class="text-white group-hover:opacity-70 transition-opacity">alex</span>
-      <span class="text-[var(--text-muted)] group-hover:text-white transition-colors">.dev</span>
-    </a>
-    
-    <div class="hidden md:flex items-center space-x-10">
-      {#each links as link}
-        <a 
-          href={link.href} 
-          class="text-sm text-[var(--text-muted)] hover:text-white transition-colors duration-300 relative group"
-        >
-          {link.name}
-          <span class="absolute -bottom-1 left-0 w-0 h-[1px] bg-white transition-all duration-300 group-hover:w-full opacity-50"></span>
-        </a>
-      {/each}
-      
-      <a 
-        href="mailto:canbeadhil@gmail.com"
-        class="text-white bg-white/10 hover:bg-white text-xs px-5 py-2.5 rounded-full font-medium tracking-wide hover:text-black transition-all duration-300"
-      >
-        <span class="relative top-[1px]">GET IN TOUCH</span>
-      </a>
-    </div>
-    
-    <!-- Mobile Menu Button -->
-    <button class="md:hidden text-white opacity-80" aria-label="Menu">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M3 12h18M3 6h18M3 18h18" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  </div>
-</nav>
+	<nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 md:px-10">
+		<a href={resolve('/')} class="font-mono-ui text-sm tracking-widest text-(--text) uppercase">
+			AR<span class="text-(--accent)">.</span>
+		</a>
+
+		<div class="hidden items-center gap-8 md:flex">
+			{#each links as link (link.href)}
+				<a
+					href={link.href}
+					aria-current={isActive(link.href) ? 'page' : undefined}
+					class="font-mono-ui group text-xs tracking-wider uppercase transition-colors duration-300 hover:text-(--text) {isActive(
+						link.href
+					)
+						? 'text-(--text)'
+						: 'text-(--text-dim)'}"
+				>
+					<span
+						class="mr-1 transition-colors group-hover:text-(--accent) {isActive(link.href)
+							? 'text-(--accent)'
+							: 'text-(--text-faint)'}">{link.index}</span
+					>{link.name}
+				</a>
+			{/each}
+
+			<a
+				href="mailto:{data.profile.email}"
+				class="font-mono-ui border border-(--line-strong) px-4 py-2 text-xs tracking-wider text-(--text) uppercase transition-all duration-300 hover:border-(--accent) hover:bg-(--accent) hover:text-(--accent-ink)"
+			>
+				Get in touch
+			</a>
+		</div>
+
+		<button
+			class="text-(--text) md:hidden"
+			aria-label="Toggle navigation menu"
+			aria-expanded={isMobileMenuOpen}
+			aria-controls="mobile-nav-menu"
+			onclick={() => (isMobileMenuOpen = !isMobileMenuOpen)}
+		>
+			<svg
+				width="24"
+				height="24"
+				viewBox="0 0 24 24"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="1.5"
+			>
+				<path
+					d={isMobileMenuOpen ? 'M6 6l12 12M18 6L6 18' : 'M3 12h18M3 6h18M3 18h18'}
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+		</button>
+	</nav>
+
+	{#if isMobileMenuOpen}
+		<div id="mobile-nav-menu" class="border-t border-(--line) px-6 py-6 md:hidden">
+			<div class="flex flex-col gap-1">
+				{#each links as link (link.href)}
+					<a
+						href={link.href}
+						aria-current={isActive(link.href) ? 'page' : undefined}
+						onclick={() => (isMobileMenuOpen = false)}
+						class="font-mono-ui flex items-baseline gap-3 py-3 text-left text-sm tracking-wider uppercase transition-colors hover:text-(--text) {isActive(
+							link.href
+						)
+							? 'text-(--text)'
+							: 'text-(--text-dim)'}"
+					>
+						<span class="text-xs text-(--accent)">{link.index}</span>
+						{link.name}
+					</a>
+				{/each}
+				<a
+					href="mailto:{data.profile.email}"
+					class="font-mono-ui mt-4 border border-(--line-strong) px-4 py-3 text-center text-xs tracking-wider text-(--text) uppercase transition-all hover:bg-(--accent) hover:text-(--accent-ink)"
+					onclick={() => (isMobileMenuOpen = false)}
+				>
+					Get in touch
+				</a>
+			</div>
+		</div>
+	{/if}
+</header>

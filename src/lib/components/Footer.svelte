@@ -1,39 +1,92 @@
 <script lang="ts">
-  import { data } from '$lib/data';
+	import { resolve } from '$app/paths';
+	import { onMount } from 'svelte';
+	import { data } from '$lib/data';
+
+	const navLinks = [
+		{ name: 'Home', href: resolve('/') },
+		{ name: 'Work', href: resolve('/work') },
+		{ name: 'Projects', href: resolve('/projects') },
+		{ name: 'About', href: resolve('/about') },
+		{ name: 'Contact', href: resolve('/contact') }
+	];
+
+	// Live clock in my timezone — small proof there's a person on the other end
+	let localTime = $state('');
+
+	function tick() {
+		localTime = new Date().toLocaleTimeString('en-GB', {
+			timeZone: 'Asia/Kolkata',
+			hour: '2-digit',
+			minute: '2-digit'
+		});
+	}
+
+	onMount(() => {
+		tick();
+		const interval = setInterval(tick, 30_000);
+		return () => clearInterval(interval);
+	});
 </script>
 
-<footer class="border-t border-white/5 bg-[var(--bg-secondary)] mt-20 pt-16 pb-8">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-      <div class="mb-8 md:mb-0 text-center md:text-left">
-        <h2 class="text-3xl font-bold mb-2 text-white">Let's work together</h2>
-        <p class="text-[var(--text-muted)] max-w-md">
-          Have a project in mind? Let's build something amazing for the future.
-        </p>
-      </div>
-      
-      <div class="flex space-x-6">
-        {#each data.socials as social}
-          <a 
-            href={social.url} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-[var(--accent-primary)] hover:text-black hover:border-transparent hover:shadow-[0_0_20px_var(--accent-primary)] transition-all duration-300"
-            aria-label={social.name}
-          >
-           <!-- Simple Icons can be replaced with actual SVGs later -->
-           <span class="text-xs font-bold">{social.name[0]}</span>
-          </a>
-        {/each}
-      </div>
-    </div>
-    
-    <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-white/5 text-sm text-[var(--text-muted)]">
-      <p>&copy; {new Date().getFullYear()} {data.profile.name}. All rights reserved.</p>
-      <div class="flex space-x-6 mt-4 md:mt-0">
-        <a href="#" class="hover:text-white transition-colors">Privacy</a>
-        <a href="#" class="hover:text-white transition-colors">Terms</a>
-      </div>
-    </div>
-  </div>
+<!-- eslint-disable svelte/no-navigation-without-resolve -->
+<footer class="border-t border-(--line)">
+	<div class="mx-auto max-w-7xl px-6 md:px-10">
+		<div class="grid grid-cols-1 gap-px md:grid-cols-3">
+			<div class="border-b border-(--line) py-10 md:border-r md:border-b-0 md:py-12 md:pr-10">
+				<p class="section-label mb-4">Index</p>
+				<ul class="space-y-2">
+					{#each navLinks as link (link.href)}
+						<li>
+							<a
+								href={link.href}
+								class="link-line font-mono-ui text-sm text-(--text-dim) transition-colors hover:text-(--text)"
+							>
+								{link.name}
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+
+			<div class="border-b border-(--line) py-10 md:border-r md:border-b-0 md:px-10 md:py-12">
+				<p class="section-label mb-4">Socials</p>
+				<ul class="space-y-2">
+					{#each data.socials as social (social.name)}
+						<li>
+							<a
+								href={social.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="link-line font-mono-ui text-sm text-(--text-dim) transition-colors hover:text-(--text)"
+							>
+								{social.name} <span class="text-(--text-faint)">{social.handle}</span>
+							</a>
+						</li>
+					{/each}
+				</ul>
+			</div>
+
+			<div class="py-10 md:py-12 md:pl-10">
+				<p class="section-label mb-4">Contact</p>
+				<a
+					href="mailto:{data.profile.email}"
+					class="link-line font-mono-ui text-sm break-all text-(--text-dim) transition-colors hover:text-(--text)"
+				>
+					{data.profile.email}
+				</a>
+				<p class="font-mono-ui mt-2 text-sm text-(--text-faint)">
+					{data.profile.location}{#if localTime}
+						· {localTime} IST{/if}
+				</p>
+			</div>
+		</div>
+
+		<div
+			class="font-mono-ui flex flex-col items-start justify-between gap-2 border-t border-(--line) py-6 text-xs tracking-wider text-(--text-faint) uppercase md:flex-row md:items-center"
+		>
+			<p>&copy; {new Date().getFullYear()} {data.profile.name}</p>
+			<p>Designed &amp; built with SvelteKit</p>
+		</div>
+	</div>
 </footer>
