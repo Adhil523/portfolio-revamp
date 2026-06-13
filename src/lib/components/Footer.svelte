@@ -1,14 +1,14 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { data } from '$lib/data';
+	import { URLS } from '$lib/urls';
 
 	const navLinks = [
-		{ name: 'Home', href: resolve('/') },
-		{ name: 'Work', href: resolve('/work') },
-		{ name: 'Projects', href: resolve('/projects') },
-		{ name: 'About', href: resolve('/about') },
-		{ name: 'Contact', href: resolve('/contact') }
+		{ name: 'Home', href: URLS.app.home },
+		{ name: 'Work', href: URLS.app.work },
+		{ name: 'Projects', href: URLS.app.projects },
+		{ name: 'About', href: URLS.app.about },
+		{ name: 'Contact', href: URLS.app.contact }
 	];
 
 	// Live clock in my timezone — small proof there's a person on the other end

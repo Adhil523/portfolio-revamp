@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { reveal } from '$lib/actions/reveal';
+	import { URLS } from '$lib/urls';
 </script>
 
 <!-- Full-width CTA band shown at the bottom of every page except /contact -->
+<!-- eslint-disable svelte/no-navigation-without-resolve -- route comes from the URLS map -->
 <section class="border-t border-(--line)">
 	<a
-		href={resolve('/contact')}
+		href={URLS.app.contact}
 		class="group block transition-colors duration-500 hover:bg-(--bg-raised)"
 	>
 		<div

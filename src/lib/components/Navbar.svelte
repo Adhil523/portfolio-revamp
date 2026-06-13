@@ -1,19 +1,25 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
+	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
+	import { URLS } from '$lib/urls';
 
 	const links = [
-		{ name: 'Work', href: resolve('/work') },
-		{ name: 'Projects', href: resolve('/projects') },
-		{ name: 'About', href: resolve('/about') },
-		{ name: 'Contact', href: resolve('/contact') }
+		{ name: 'Work', path: URLS.app.work },
+		{ name: 'Projects', path: URLS.app.projects },
+		{ name: 'About', path: URLS.app.about },
+		{ name: 'Contact', path: URLS.app.contact }
 	];
 
-	let linkEls = $state<HTMLAnchorElement[]>([]);
+	async function navigate(path: Parameters<typeof goto>[0]) {
+		// eslint-disable-next-line svelte/no-navigation-without-resolve -- routes come from the URLS map
+		await goto(path);
+	}
+
+	let linkEls = $state<HTMLButtonElement[]>([]);
 	let hovered = $state<number | null>(null);
 
-	let activeIndex = $derived(links.findIndex((l) => l.href === page.url.pathname));
+	let activeIndex = $derived(links.findIndex((l) => l.path === page.url.pathname));
 	// The indicator follows the hovered tab, falling back to the active route.
 	let target = $derived(hovered ?? activeIndex);
 
@@ -47,23 +53,23 @@
 	const isActive = (i: number) => activeIndex === i;
 </script>
 
-<!-- eslint-disable svelte/no-navigation-without-resolve -- all hrefs are resolve()-built -->
 <header class="fixed bottom-6 left-1/2 z-70 -translate-x-1/2 px-3">
 	<nav
 		class="flex items-center gap-1 rounded-full border border-(--line-strong) bg-(--bg-raised)/70 p-1.5 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.7)] backdrop-blur-xl"
 	>
 		<!-- Brand -->
-		<a
-			href="/"
+		<button
+			type="button"
 			aria-label="Home"
-			class="group flex items-center rounded-full px-3.5 py-2 transition-colors"
+			onclick={() => navigate(URLS.app.home)}
+			class="group flex cursor-pointer items-center rounded-full px-3.5 py-2 transition-colors"
 		>
 			<span
 				class="font-mono-ui text-sm tracking-widest text-(--text) uppercase transition-colors group-hover:text-(--accent)"
 			>
 				AR<span class="text-(--accent)">.</span>
 			</span>
-		</a>
+		</button>
 
 		<span class="mx-0.5 h-5 w-px bg-(--line-strong)" aria-hidden="true"></span>
 
@@ -77,15 +83,14 @@
 				aria-hidden="true"
 			></span>
 
-			{#each links as link, i (link.href)}
-				<a
+			{#each links as link, i (link.path)}
+				<button
+					type="button"
 					bind:this={linkEls[i]}
-					href={link.href}
-					role="tab"
-					aria-selected={isActive(i)}
 					aria-current={isActive(i) ? 'page' : undefined}
 					onmouseenter={() => (hovered = i)}
-					class="font-mono-ui relative z-10 rounded-full px-4 py-2 text-xs tracking-widest uppercase transition-colors duration-300 {target ===
+					onclick={() => navigate(link.path)}
+					class="font-mono-ui relative z-10 cursor-pointer rounded-full px-4 py-2 text-xs tracking-widest uppercase transition-colors duration-300 {target ===
 					i
 						? 'text-(--accent-ink)'
 						: isActive(i)
@@ -93,7 +98,7 @@
 							: 'text-(--text-dim) hover:text-(--text)'}"
 				>
 					{link.name}
-				</a>
+				</button>
 			{/each}
 		</div>
 	</nav>

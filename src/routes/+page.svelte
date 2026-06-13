@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
 	import { data } from '$lib/data';
+	import { URLS } from '$lib/urls';
 	// import ContactCta from '$lib/components/ContactCta.svelte';
 	// import HeroScene from '$lib/components/HeroScene.svelte';
 	// import { reveal } from '$lib/actions/reveal';
@@ -22,7 +22,6 @@
 <!-- ======================== HERO ======================== -->
 <section class="relative flex min-h-screen flex-col justify-center overflow-hidden">
 	<div class="relative mx-auto w-full max-w-7xl px-6 pb-12 md:px-10">
-
 		<h1
 			class="mb-12 text-[13vw] leading-[0.95] font-medium tracking-tighter text-(--text) md:text-[7.5rem] lg:text-[9rem]"
 		>
@@ -31,7 +30,7 @@
 				Rumais<span class="text-(--accent)">.</span>
 			</span>
 		</h1>
-				<div
+		<div
 			class="font-mono-ui animate-rise mb-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs tracking-widest text-(--text-dim) uppercase"
 			style="animation-delay: 0.1s"
 		>
@@ -51,15 +50,16 @@
 				notice.
 			</p>
 
+			<!-- eslint-disable svelte/no-navigation-without-resolve -- routes come from the URLS map -->
 			<div class="flex items-center gap-8">
 				<a
-					href={resolve('/projects')}
+					href={URLS.app.projects}
 					class="link-line font-mono-ui text-xs tracking-widest text-(--text) uppercase"
 				>
 					See projects →
 				</a>
 				<a
-					href={resolve('/work')}
+					href={URLS.app.work}
 					class="link-line font-mono-ui text-xs tracking-widest text-(--text-dim) uppercase"
 				>
 					Where I've worked
@@ -113,7 +113,7 @@
 
 				<div use:reveal={{ delay: 200 }}>
 					<a
-						href={resolve('/about')}
+						href={URLS.app.about}
 						class="link-line font-mono-ui text-xs tracking-widest text-(--text) uppercase"
 					>
 						More about me →
