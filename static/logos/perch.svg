@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>Perch</title>
+  <defs>
+    <linearGradient id="perch-g" x1="10" y1="12" x2="52" y2="50" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffb27a"/>
+      <stop offset=".45" stop-color="#ff7a2f"/>
+      <stop offset=".8" stop-color="#ff4d6d"/>
+      <stop offset="1" stop-color="#d6409f"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="15" fill="#08070c"/>
+  <g fill="url(#perch-g)">
+    <circle cx="40" cy="20.5" r="9.5"/>
+    <path d="M48 26 C50.5 40 42 47.5 30 47.5 C22 47.5 16.5 44 14.5 40 L5 44.5 L11 32.5 C13.5 25 22 21 31.5 22 Z"/>
+    <path d="M49 17.5 L57 20.5 L49 23.5 Z"/>
+  </g>
+  <circle cx="42.5" cy="18.5" r="2.1" fill="#08070c"/>
+  <path d="M40 30 C37 38.5 29 41.5 19 38.5" fill="none" stroke="#08070c" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M28 47.5 V53 M34 47 V53" stroke="#f6f3ff" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M12 53.5 H52" stroke="#f6f3ff" stroke-width="3" stroke-linecap="round"/>
+</svg>

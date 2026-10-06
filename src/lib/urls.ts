@@ -7,6 +7,11 @@ const app = {
 	work: '/work'
 } as const;
 
+const assets = {
+	resume: '/adhil-rumais-resume.pdf'
+} as const;
+
 export const URLS = {
-	app
+	app,
+	assets
 } as const;

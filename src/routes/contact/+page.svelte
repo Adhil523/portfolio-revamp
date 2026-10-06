@@ -2,6 +2,7 @@
 	import { data } from '$lib/data';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import { reveal } from '$lib/actions/reveal';
+	import { URLS } from '$lib/urls';
 </script>
 
 <svelte:head>
@@ -76,6 +77,16 @@
 				<p class="font-mono-ui text-sm text-(--text-dim)" use:reveal={{ delay: 80 }}>
 					{data.profile.location} · UTC+5:30
 				</p>
+
+				<p class="section-label mt-12 mb-4" use:reveal>Resume</p>
+				<a
+					href={URLS.assets.resume}
+					download="Adhil Rumais - Resume.pdf"
+					class="link-line font-mono-ui text-sm text-(--text-dim) transition-colors hover:text-(--text)"
+					use:reveal={{ delay: 80 }}
+				>
+					Download PDF <span class="text-(--accent)" aria-hidden="true">↓</span>
+				</a>
 			</div>
 		</div>
 	</div>

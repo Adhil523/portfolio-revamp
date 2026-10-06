@@ -79,6 +79,13 @@
 					{data.profile.location}{#if localTime}
 						· {localTime} IST{/if}
 				</p>
+				<a
+					href={URLS.assets.resume}
+					download="Adhil Rumais - Resume.pdf"
+					class="link-line font-mono-ui mt-4 inline-block text-sm text-(--text-dim) transition-colors hover:text-(--text)"
+				>
+					Resume <span class="text-(--accent)" aria-hidden="true">↓</span>
+				</a>
 			</div>
 		</div>
 

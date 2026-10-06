@@ -18,7 +18,9 @@
 			class="font-mono-ui col-span-12 flex items-center gap-4 text-xs text-(--text-faint) md:col-span-1 md:block"
 		>
 			<span class="transition-colors duration-300 group-hover:text-(--accent)">{indexLabel}</span>
-			<span class="md:mt-2 md:block">{project.year}</span>
+			{#if project.year}
+				<span class="md:mt-2 md:block">{project.year}</span>
+			{/if}
 		</div>
 
 		<div class="col-span-12 md:col-span-6">
@@ -46,12 +48,26 @@
 		</div>
 
 		<div class="col-span-12 overflow-hidden md:col-span-5">
-			<img
-				src={project.image}
-				alt={project.title}
-				loading="lazy"
-				class="aspect-3/2 w-full object-cover opacity-70 grayscale transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:opacity-100 group-hover:grayscale-0"
-			/>
+			{#if project.image}
+				<img
+					src={project.image}
+					alt={project.title}
+					loading="lazy"
+					class="aspect-3/2 w-full object-cover opacity-70 grayscale transition-all duration-700 ease-out group-hover:scale-[1.03] group-hover:opacity-100 group-hover:grayscale-0"
+				/>
+			{:else if project.logo}
+				<!-- Logos sit small and centred so they aren't stretched to fill the frame -->
+				<div
+					class="flex aspect-3/2 w-full items-center justify-center border border-(--line) bg-(--bg-raised) transition-colors duration-500 group-hover:border-(--line-strong)"
+				>
+					<img
+						src={project.logo}
+						alt="{project.title} logo"
+						loading="lazy"
+						class="size-16 object-contain opacity-70 grayscale transition-all duration-700 ease-out group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0 md:size-20"
+					/>
+				</div>
+			{/if}
 		</div>
 	</article>
 </a>

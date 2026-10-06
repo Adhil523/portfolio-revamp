@@ -45,13 +45,13 @@
 			style="animation-delay: 0.6s"
 		>
 			<p class="max-w-xl text-xl leading-relaxed font-light text-(--text-dim) md:text-2xl">
-				Full-stack engineer in Kerala. I take products from first schema to final pixel — and I
+				Full-stack engineer in Kerala. I take products from first schema to final pixel - and I
 				sweat the <span class="font-serif-display text-(--text) italic">details</span> most people never
 				notice.
 			</p>
 
 			<!-- eslint-disable svelte/no-navigation-without-resolve -- routes come from the URLS map -->
-			<div class="flex items-center gap-8">
+			<div class="flex flex-wrap items-center gap-x-8 gap-y-4">
 				<a
 					href={URLS.app.projects}
 					class="link-line font-mono-ui text-xs tracking-widest text-(--text) uppercase"
@@ -63,6 +63,17 @@
 					class="link-line font-mono-ui text-xs tracking-widest text-(--text-dim) uppercase"
 				>
 					Where I've worked
+				</a>
+				<a
+					href={URLS.assets.resume}
+					download="Adhil Rumais - Resume.pdf"
+					class="group font-mono-ui inline-flex items-center gap-3 border border-(--line-strong) px-5 py-3 text-xs tracking-widest text-(--text) uppercase transition-all duration-500 hover:border-(--accent) hover:bg-(--accent) hover:text-(--accent-ink)"
+				>
+					Resume
+					<span
+						class="text-(--accent) transition-all duration-500 group-hover:translate-y-0.5 group-hover:text-(--accent-ink)"
+						aria-hidden="true">↓</span
+					>
 				</a>
 			</div>
 		</div>

@@ -3,6 +3,7 @@
 	import ContactCta from '$lib/components/ContactCta.svelte';
 	import PageHeader from '$lib/components/PageHeader.svelte';
 	import { reveal } from '$lib/actions/reveal';
+	import { URLS } from '$lib/urls';
 
 	const capabilities = [
 		{
@@ -10,8 +11,8 @@
 			detail: 'Taking features from a one-line idea to production, owning the messy middle.'
 		},
 		{
-			name: 'Interface & design systems',
-			detail: 'Component libraries that designers trust and engineers actually use.'
+			name: 'Integrations & automation',
+			detail: 'Bank, ACH and third-party APIs wired into queues that run without a human watching.'
 		},
 		{
 			name: 'APIs & data modelling',
@@ -32,13 +33,28 @@
 	/>
 </svelte:head>
 
-<PageHeader
-	index="01"
-	label="01 / Work — since 2021"
-	sub="The short version: I join teams, find the hardest problem on the board, and make it boring."
->
+<PageHeader index="01" label="01 / Work — since 2024">
 	Where I've <span class="font-serif-display text-(--accent) italic">worked</span>
 </PageHeader>
+
+<!-- Resume download -->
+<!-- eslint-disable svelte/no-navigation-without-resolve -- static asset from the URLS map -->
+<section>
+	<div class="mx-auto max-w-7xl px-6 pb-16 md:px-10 md:pb-24">
+		<a
+			href={URLS.assets.resume}
+			download="Adhil Rumais - Resume.pdf"
+			class="group font-mono-ui inline-flex items-center gap-4 border border-(--line-strong) px-6 py-4 text-xs tracking-widest text-(--text) uppercase transition-all duration-500 hover:border-(--accent) hover:bg-(--accent) hover:text-(--accent-ink)"
+			use:reveal
+		>
+			Download resume
+			<span
+				class="text-(--accent) transition-all duration-500 group-hover:translate-y-0.5 group-hover:text-(--accent-ink)"
+				aria-hidden="true">↓</span
+			>
+		</a>
+	</div>
+</section>
 
 <!-- Experience -->
 <section class="border-t border-(--line)">
@@ -49,7 +65,7 @@
 			</div>
 
 			<div class="col-span-12 md:col-span-8">
-				{#each data.experience as job, i (job.role)}
+				{#each data.experience as job, i (job.project)}
 					<div
 						class="group grid grid-cols-12 gap-y-4 border-t border-(--line) py-10 transition-colors duration-500 last:border-b md:gap-x-6"
 						use:reveal={{ delay: i * 100 }}
@@ -58,12 +74,50 @@
 							<p class="font-mono-ui text-xs tracking-wider text-(--text-faint)">{job.period}</p>
 						</div>
 						<div class="col-span-12 md:col-span-9">
-							<h2
-								class="text-2xl font-medium tracking-tight text-(--text) transition-transform duration-500 group-hover:translate-x-2"
+							<div
+								class="flex items-center gap-4 transition-transform duration-500 group-hover:translate-x-2"
 							>
-								{job.role}
-							</h2>
-							<p class="font-mono-ui mt-1 mb-4 text-sm text-(--accent)">{job.company}</p>
+								{#if job.logo}
+									<img
+										src={job.logo}
+										alt=""
+										loading="lazy"
+										class="size-10 shrink-0 border border-(--line) bg-(--bg-raised) object-contain p-1.5"
+									/>
+								{:else}
+									<!-- Monogram until a logo is added -->
+									<span
+										class="font-mono-ui flex size-10 shrink-0 items-center justify-center border border-(--line) text-sm text-(--text-faint) transition-colors duration-300 group-hover:text-(--accent)"
+										aria-hidden="true"
+									>
+										{job.project.charAt(0)}
+									</span>
+								{/if}
+								<div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+									<h2 class="text-2xl font-medium tracking-tight text-(--text)">
+										{#if job.link}
+											<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- external product site -->
+											<a
+												href={job.link}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="link-line hover:text-(--accent)"
+											>
+												{job.project}<span
+													class="ml-1 text-base text-(--text-faint)"
+													aria-hidden="true">↗</span
+												>
+											</a>
+										{:else}
+											{job.project}
+										{/if}
+									</h2>
+									<p class="font-mono-ui text-xs tracking-widest text-(--accent) uppercase">
+										{job.role}
+									</p>
+								</div>
+							</div>
+							<p class="font-mono-ui mt-1 mb-4 text-sm text-(--text-faint)">{job.company}</p>
 							<p class="mb-5 max-w-xl leading-relaxed font-light text-(--text-dim)">
 								{job.description}
 							</p>

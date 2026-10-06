@@ -107,9 +107,19 @@
 							class="group flex flex-col items-start gap-4 bg-(--bg) p-6 transition-colors duration-300 hover:bg-(--bg-raised)"
 							use:reveal={{ delay: (i % 4) * 80 }}
 						>
-							<i
-								class="{skill.icon} text-3xl text-(--text-faint) transition-colors duration-300 group-hover:text-(--accent)"
-							></i>
+							{#if skill.icon}
+								<i
+									class="{skill.icon} text-3xl text-(--text-faint) transition-colors duration-300 group-hover:text-(--accent)"
+								></i>
+							{:else}
+								<!-- Monogram for tools Devicon doesn't ship an icon for -->
+								<span
+									class="font-mono-ui flex size-[1em] items-center justify-center text-3xl leading-none text-(--text-faint) transition-colors duration-300 group-hover:text-(--accent)"
+									aria-hidden="true"
+								>
+									{skill.name.charAt(0)}
+								</span>
+							{/if}
 							<div>
 								<p class="text-sm font-medium text-(--text)">{skill.name}</p>
 								<p
